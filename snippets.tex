@@ -1,0 +1,157 @@
+% defining f
+f: \mathbb{R} \to \mathbb{R}
+
+% complex step
+f(x + hi) = f(x) + f^{\prime}(x)hi + \frac{f^{\prime\prime}(x)}{2!}h^2i^2 \hdots = f(x) + f^{\prime}(x)hi - \frac{f^{\prime\prime}(x)}{2!}h^2 \hdots
+f^{\prime}(x) = \frac{\text{Im}[f(x + hi)]}{h} + \mathcal{O}(h^2)
+
+% dual diff
+f(x + y\epsilon) = f(x) + f^{\prime}(x)y\epsilon + \frac{f^{\prime\prime}(x)}{2!}y^2\epsilon^2 \hdots = f(x) + f^{\prime}(x)y\epsilon
+f^{\prime}(x) = \text{Eps}[f(x + \epsilon)]
+
+% defining \mathbf{g}
+\mathbf{g}: \mathbb{R}^n \to \mathbb{R}^m
+
+% defining g
+g: \mathbb{R}^n \to \mathbb{R}
+
+% gradient of g
+\nabla g(\mathbf{x}) =
+\sum_{i=1}^n \frac{\partial g(\mathbf{x})}{\partial x_i} =
+\nabla g(\mathbf{x}) = \begin{bmatrix}
+\frac{\partial g(\mathbf{x})}{\partial x_1} \\
+\vdots \\
+\frac{\partial g(\mathbf{x})}{\partial x_i} \\
+\vdots \\
+\frac{\partial g(\mathbf{x})}{\partial x_n}
+\end{bmatrix}
+
+% partial derivative of g
+\frac{\partial g(\mathbf{x})}{\partial x_i} =
+\text{Eps}[g(\begin{bmatrix}
+ x_1 \\
+\vdots \\
+x_i + \epsilon \\
+\vdots \\
+x_n
+\end{bmatrix})]
+
+g(\begin{bmatrix}
+x_1 \\
+\vdots \\
+x_i + \epsilon \\
+\vdots \\
+x_n
+\end{bmatrix}) = g(\mathbf{x}) + \frac{\partial g(\mathbf{x})}{\partial x_i} \epsilon
+
+% multidimensional dual number
+f(x + y\epsilon) = f(x) + f^{\prime}(x)y\epsilon
+f(x + \sum_{i=1}^n y_i\epsilon_i) = f(x) + f^{\prime}(x)\sum_{i=1}^n y_i\epsilon_i
+
+% seeding the input vector
+\mathbf{x} =
+\begin{bmatrix}
+x_1 \\
+\vdots \\
+x_i \\
+\vdots \\
+x_n
+\end{bmatrix} \to
+\mathbf{x}_\epsilon =
+\begin{bmatrix}
+x_1 + \epsilon_1 \\
+\vdots \\
+x_i + \epsilon_i \\
+\vdots \\
+x_n + \epsilon_n
+\end{bmatrix}
+
+% gradient g eval
+g(\mathbf{x}_{\epsilon}) = g(\mathbf{x}) + \sum_{i=1}^n \frac{\partial g(\mathbf{x})}{\partial x_i} \epsilon_i
+
+% jacobian g eval
+\mathbf{g}(\mathbf{x}_{\epsilon}) =
+\begin{bmatrix}
+g_1(\mathbf{x}_{\epsilon}) \\
+\vdots \\
+g_j(\mathbf{x}_{\epsilon}) \\
+\vdots \\
+g_m(\mathbf{x}_{\epsilon})
+\end{bmatrix} =
+\begin{bmatrix}
+g_1(\mathbf{x}) + \sum_{i=1}^{n} \frac{\partial g_1(\mathbf{x})}{\partial x_i}\epsilon_i \\
+\vdots \\
+g_j(\mathbf{x}) + \sum_{i=1}^{n} \frac{\partial g_j(\mathbf{x})}{\partial x_i}\epsilon_i \\
+\vdots \\
+g_m(\mathbf{x}) + \sum_{i=1}^{n} \frac{\partial g_m(\mathbf{x})}{\partial x_i}\epsilon_i \\
+\end{bmatrix} \to
+\mathbf{J}(\mathbf{g})(\mathbf{x}) =
+\begin{bmatrix}
+\frac{\partial g_1(\mathbf{x})}{\partial x_1} && \hdots && \frac{\partial g_1(\mathbf{x})}{\partial x_i} && \hdots && \frac{\partial g_1(\mathbf{x})}{\partial x_n} \\
+\vdots && \ddots && \vdots && \ddots \\
+\frac{\partial g_j(\mathbf{x})}{\partial x_1} && \hdots && \frac{\partial g_j(\mathbf{x})}{\partial x_i} && \hdots && \frac{\partial g_j(\mathbf{x})}{\partial x_n} \\
+\vdots && \ddots && \vdots && \ddots \\
+\frac{\partial g_m(\mathbf{x})}{\partial x_1} && \hdots && \frac{\partial g_m(\mathbf{x})}{\partial x_i} && \hdots && \frac{\partial g_m(\mathbf{x})}{\partial x_n} \\
+\end{bmatrix}
+
+% cumprod
+
+\textrm{cumprod}(
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    x_3 \\
+    \vdots \\
+    x_n
+\end{bmatrix}) =
+\begin{bmatrix}
+    x_1 \\
+    x_2x_1 \\
+    x_3x_2x_1 \\
+    \vdots \\
+    x_nx_{n-1}x_{n-2} \hdots x_1
+\end{bmatrix}
+
+\mathbf{J}(\textrm{cumprod})(
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    x_3
+\end{bmatrix}) =
+\begin{bmatrix}
+    x_1 & 0 & 0 \\
+    x_2x_1 & x_1 & 0 \\
+    x_3x_2 & x_3x_1 & x_2x_1
+\end{bmatrix}
+
+\mathbf{J}(\textrm{cumprod})(
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}) =
+\begin{bmatrix}
+    1 & 0 & 0 \\
+    2 & 1 & 0 \\
+    6 & 3 & 2
+\end{bmatrix}
+
+% benchmarks
+
+\begin{tabular}{lllll}
+Function        &  Input Size      & autograd Time (s) & ForwardDiff Time (s) & Ratio   \\ \hline
+Ackley          &  10              & 0.001204          & 0.000001             & 1204.00 \\
+Ackley          &  100             & 0.008472          & 0.000048             & 176.50  \\
+Ackley          &  1000            & 0.081499          & 0.004925             & 16.55   \\
+Ackley          &  10000           & 0.835441          & 0.516848             & 1.65    \\
+Ackley          &  100000          & 8.361769          & 52.337054            & 0.15    \\
+\end{tabular}
+
+\begin{tabular}{lllll}
+Function        &  Input Size      & autograd Time (s) & ForwardDiff Time (s) & Ratio   \\ \hline
+Rosenbrock      &  10              & 0.000866          & 0.000001             & 866.0   \\
+Rosenbrock      &  100             & 0.004395          & 0.000028             & 156.96  \\
+Rosenbrock      &  1000            & 0.040702          & 0.002605             & 15.62   \\
+Rosenbrock      &  10000           & 0.411095          & 0.257495             & 1.60    \\
+Rosenbrock      &  100000          & 4.173851          & 26.596339            & 0.16
+\end{tabular}
