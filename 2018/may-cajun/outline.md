@@ -1,0 +1,23 @@
+- Intro: who I am/my area of work
+- There's A Problem In The Julia Ecosystem That Nobody Is Talking About
+    - interface to compiler is essentially via types (structure) + dispatch (behavior)
+    - developers abuse this interface to hackily implement "nonstandard interpretation"-y packages
+        - hardware specialization
+        - automatic differentiation
+        - interval arithmetic
+        - auto-parallelism
+        - any "construct a CG from Julia code" package
+    - problems with this approach
+        - multiple dispatch ambiguities
+        - type constraints in user code
+        - "join points" are limited to method calls; what about control flow, blocks of multiple methods, etc.?
+    - conclusion: we need to augment the existing interface to the compiler
+    - other compilers allow you to solve some of these problems via static pass frameworks; what about a dynamic pass framework?
+- Cassette
+    - High-level description of what it allows you to do
+    - How it works
+        - Julia's Run-Compile Cycle (step through compiler chart one box at a time)
+        - Overdubbed Run-Compile Cycle (same step-through, but skip redundant material and focus on cassette-relevant steps)
+    - now we can inject compile-time passes dynamically; revisit earlier comparison to static pass framework
+    - a general IR pass is overkill for most use cases, so Cassette provides a familiar interface if method call overloading suffices: contextual dispatch
+    - preview of the future: metadata propagation
